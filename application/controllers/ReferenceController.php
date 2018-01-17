@@ -3,6 +3,8 @@
 // Namespace for modules is always Icinga\Module\$module\Controllers;
 namespace Icinga\Module\Showcase\Controllers;
 
+use Icinga\Data\Filter\FilterMatch;
+use Icinga\Module\Monitoring\Backend\MonitoringBackend;
 use Icinga\Module\Showcase\Forms\ShowcaseConfigForm;
 use Icinga\Util\StringHelper;
 use Icinga\Web\Controller; /* Base class for controllers */
@@ -126,5 +128,47 @@ class ReferenceController extends Controller
 
         // Do something based on the restrictions. We just show them in the view
         $this->view->restrictions = $restrictions;
+    }
+
+    /**
+     * Serve showcase/reference/problems. Example how to fetch data from the IDO. Requires the monitoring module
+     */
+    public function problemsAction()
+    {
+        $this->getTabs()->add('showcase.reference.problems', [
+            'active' => true,
+            'label'  => $this->translate('Problems'),
+            'url'    => $this->getRequest()->getUrl()
+        ]);
+
+        $monitoringBackend = MonitoringBackend::instance();
+
+        $filter = new FilterMatch('service_state', '>', 0);
+
+        $services = $monitoringBackend
+            ->select()
+            ->from(
+                'servicestatus',
+                [
+                    'host_name',
+                    'service_description',
+                    'service_state',
+                    '_host_location', // Example host custom variable
+                    '_service_is_microservice' // Example service custom variable
+                ]
+            )
+            ->applyFilter($filter)
+            ->order('host_name')
+            ->limit(5);
+
+        /*
+         * You could now call fetchAll on the $servicesObject but that will load all the results in memory and is in
+         * most cases considered bad practice. Use foreach and stream the results line by line. We will do so in the
+         * view script.
+         */
+        $this->view->services = $services;
+
+        // Auto-refresh every 10 seconds
+        $this->setAutorefreshInterval(10);
     }
 }
