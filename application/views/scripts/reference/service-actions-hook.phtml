@@ -1,0 +1,9 @@
+<?php if (! $this->compact): ?>
+<div class="controls">
+    <?= $tabs ?>
+</div>
+<?php endif ?>
+<div class="content">
+    <h1><?= $this->escape($this->translate('Example service actions hook')) ?></h1>
+    <p><?= $this->escape(sprintf($this->translate('This is an action for service "%s: %s".'), $host, $service)) ?></p>
+</div>

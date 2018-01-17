@@ -171,4 +171,35 @@ class ReferenceController extends Controller
         // Auto-refresh every 10 seconds
         $this->setAutorefreshInterval(10);
     }
+
+    /**
+     * Serve showcase/reference/host-actions-hook. Note that camel case controller names are separated by hyphens in
+     * the URL. This action is used as target for our host actions hook
+     */
+    public function hostActionsHookAction()
+    {
+        $this->getTabs()->add('showcase.reference.host-actions-hook', [
+            'active' => true,
+            'label'  => $this->translate('Host Actions Hook'),
+            'url'    => $this->getRequest()->getUrl()
+        ]);
+
+        $this->view->host = $this->params->getRequired('host');
+    }
+
+    /**
+     * Serve showcase/reference/service-actions-hook. Note that camel case controller names are separated by hyphens in
+     * the URL. This action is used as target for our service actions hook
+     */
+    public function serviceActionsHookAction()
+    {
+        $this->getTabs()->add('showcase.reference.service-actions-hook', [
+            'active' => true,
+            'label'  => $this->translate('Service Actions Hook'),
+            'url'    => $this->getRequest()->getUrl()
+        ]);
+
+        $this->view->host = $this->params->getRequired('host');
+        $this->view->service = $this->params->getRequired('service');
+    }
 }
