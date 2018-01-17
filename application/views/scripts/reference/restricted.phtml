@@ -1,0 +1,18 @@
+<?php if (! $this->compact): ?>
+<div class="controls">
+    <?= $tabs ?>
+</div>
+<?php endif ?>
+<div class="content">
+    <h1><?= $this->escape($this->translate('Welcome to the restricted area')) ?></h1>
+<?php if (empty($restrictions)): ?>
+    <p><?= $this->escape($this->translate('You are not restricted')) ?></p>
+<?php else: ?>
+    <p><?= $this->escape($this->translate('You are restricted to the following topics.')) ?></p>
+    <ul>
+    <?php foreach ($restrictions as $restriction): ?>
+        <li><?= $this->escape($restriction) ?></li>
+    <?php endforeach ?>
+    </ul>
+<?php endif ?>
+</div>

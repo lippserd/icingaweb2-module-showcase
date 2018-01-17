@@ -4,8 +4,8 @@
 namespace Icinga\Module\Showcase\Controllers;
 
 use Icinga\Module\Showcase\Forms\ShowcaseConfigForm;
-// Base class for controllers
-use Icinga\Web\Controller;
+use Icinga\Util\StringHelper;
+use Icinga\Web\Controller; /* Base class for controllers */
 
 /*
  * By default, all URLs in Icinga Web 2 are composed using the scheme module/controller/action.
@@ -90,5 +90,41 @@ class ReferenceController extends Controller
         ]);
 
         $this->view->query = $this->params->getRequired('q');
+    }
+
+    /**
+     * Serve showcase/reference/restricted. Example for permission and restriction usage
+     */
+    public function restrictedAction()
+    {
+        // Exit if user does not have the following permission granted
+        $this->assertPermission('showcase/restricted');
+
+        // Or write your own logic if you want to enhance the view or allow more functions based on permissions
+        if ($this->hasPermission('showcase/restricted')) {
+            // Permitted
+        } else {
+            // Denied
+        }
+
+        $this->getTabs()->add('showcase.reference.restricted', [
+            'active' => true,
+            'label'  => $this->translate('Restricted'),
+            'url'    => $this->getRequest()->getUrl()
+        ]);
+
+        // Handle restrictions. Since roles define restrictions and users may have more than one role we receive an
+        // array of restrictions here
+        $rawRestrictions = $this->getRestrictions('showcase/restricted/filter');
+
+        $restrictions = [];
+
+        // The implementation decides how to handle restrictions. We expect comma separated strings here
+        foreach ($rawRestrictions as $rawRestriction) {
+            $restrictions = array_merge($restrictions, StringHelper::trimSplit($rawRestriction));
+        }
+
+        // Do something based on the restrictions. We just show them in the view
+        $this->view->restrictions = $restrictions;
     }
 }
