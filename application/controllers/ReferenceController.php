@@ -3,6 +3,7 @@
 // Namespace for modules is always Icinga\Module\$module\Controllers;
 namespace Icinga\Module\Showcase\Controllers;
 
+use Icinga\Module\Showcase\Forms\ShowcaseConfigForm;
 // Base class for controllers
 use Icinga\Web\Controller;
 
@@ -54,5 +55,24 @@ class ReferenceController extends Controller
             'label'  => $this->translate('Index'),
             'url'    => $this->getRequest()->getUrl()
         ]);
+    }
+
+    /**
+     * Serve showcase/reference/config. Handle the module configuration
+     */
+    public function configAction()
+    {
+        $this->getTabs()->add('showcase.reference.config', [
+            'active' => true,
+            'label'  => $this->translate('Config'),
+            'url'    => $this->getRequest()->getUrl()
+        ]);
+
+        $form = new ShowcaseConfigForm();
+        $form->setIniConfig($this->Config());
+        // $this->Config() is bound to /etc/icingaweb2/modules/showcase/config.ini by default
+        $form->handleRequest();
+
+        $this->view->form = $form;
     }
 }
