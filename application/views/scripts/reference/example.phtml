@@ -1,0 +1,10 @@
+<?php if (! $this->compact): /* Hide controls if view is added to the dashboard */ ?>
+<div class="controls">
+    <!-- Controls are sticky and don't scroll with the view -->
+    <?= /** @var \Icinga\Web\Widget\Tabs $tabs */ $tabs ?>
+</div>
+<?php endif ?>
+<div class="content">
+    <!-- Content is scrollable with the view if it is bigger than the current viewport -->
+    <p><?= $this->escape($this->translate('Example content')) ?></p>
+</div>
