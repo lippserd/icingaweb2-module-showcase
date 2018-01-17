@@ -1,0 +1,9 @@
+<?php if (! $this->compact): ?>
+<div class="controls">
+    <?= $tabs ?>
+</div>
+<?php endif ?>
+<div class="content">
+    <h1 class="greeting-header"><?= $this->escape($this->translate('Welcome to the showcase mdoule')) ?></h1>
+    <p class="greeting-message"><?= $this->escape($greeting) ?></p>
+</div>
