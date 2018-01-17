@@ -58,7 +58,8 @@ class ReferenceController extends Controller
     }
 
     /**
-     * Serve showcase/reference/config. Handle the module configuration
+     * Serve showcase/reference/config. Handle the module configuration. Has to be registered as config tab in the
+     * configuration.php
      */
     public function configAction()
     {
@@ -74,5 +75,20 @@ class ReferenceController extends Controller
         $form->handleRequest();
 
         $this->view->form = $form;
+    }
+
+    /**
+     * Serve showcase/reference/search. Show search results in Icinga Web 2's search dashboard. Has to be registered
+     * as search URL in the configuration.php
+     */
+    public function searchAction()
+    {
+        $this->getTabs()->add('showcase.reference.search', [
+            'active' => true,
+            'label'  => $this->translate('Search'),
+            'url'    => $this->getRequest()->getUrl()
+        ]);
+
+        $this->view->query = $this->params->getRequired('q');
     }
 }
