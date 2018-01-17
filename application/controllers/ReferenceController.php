@@ -39,6 +39,9 @@ class ReferenceController extends Controller
             'label'  => $this->translate('Example'),
             'url'    => $this->getRequest()->getUrl()
         ]);
+
+        // Enable auto-refresh. Refresh every 10 seconds
+        $this->setAutorefreshInterval(10);
     }
 
     /**
